@@ -10,7 +10,7 @@ server.listen(3)
 print(f"Listening for fish on port {serverPort}")
 
 client, addr = server.accept()
-print(f"Client {addr[0]} connected on port {addr[1]}")
+print(f"Fish {addr[0]} connected on port {addr[1]}")
 
 while True:
     msg = client.recv(2048)
