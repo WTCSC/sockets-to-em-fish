@@ -1,22 +1,12 @@
-## Fish Chat Room
+## Fish Room
 A simple chat room, but fish themed 
 
-## Chatroom of fish
-Lots of Fish
+## How it works client side
+A client fish joins the server and sends a message, then eventually the other client fish will receive that message
 
-#### Id fish verification
-* Are you a fish
+#### How it works server side
+* Once a message is sent the server relays the message to the other client fish that are currently connected
 
-#### How to fish
+#### How to connect
 * Fish the fish
 
-#### Fish
-Fish
-
-#### Fish
-Fish
- * Fish
-
-Fish
-
-### Fishh
