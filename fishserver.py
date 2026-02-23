@@ -17,7 +17,7 @@ while True:
     if not msg:
         break
     print(f"Received {msg}")
-    client.send(msg.encode())
+    client.send(f"{msg}".encode())
 
 
 client.close()
