@@ -2,15 +2,15 @@ import socket
 
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-serverport = int(input("Enter port: "))
+serverPort = int(input("Enter port: "))
 
-server.bind(("0.0.0.0", serverport))
+server.bind(("0.0.0.0", serverPort))
 
 server.listen(3)
-print(f"Listening for fish on port {serverport}")
+print(f"Listening for fish on port {serverPort}")
 
 client, addr = server.accept()
-print(f"Client {addr} connected")
+print(f"Client {addr[0]} connected on port {addr[1]}")
 
 while True:
     msg = client.recv(2048)
