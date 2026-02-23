@@ -14,8 +14,8 @@ except ValueError:
 # Connect to server (replace with the server machine’s IP if needed)
 try:
     client.connect((serverAddr, serverPort))
-except:
-    print('Error: cannot connect')
+except ConnectionRefusedError:
+    print('Error: Connection Refused')
     quit()
 print("Connected to server")
 
