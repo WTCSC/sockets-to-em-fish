@@ -1,7 +1,9 @@
 import socket
 
+#Create a socket
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
+#User needs to input the port to bind to
 serverPort = int(input("Enter port: "))
 
 server.bind(("0.0.0.0", serverPort))

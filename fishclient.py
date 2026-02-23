@@ -6,6 +6,7 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 serverAddr = input("Input the IP of the server: ")
 serverPort = int(input("Input the port of the server: "))
+
 # Connect to server (replace with the server machine’s IP if needed)
 client.connect((serverAddr, serverPort))
 print("Connected to server")
