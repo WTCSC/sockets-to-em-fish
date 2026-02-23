@@ -5,10 +5,18 @@ client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 
 serverAddr = input("Input the IP of the server: ")
-serverPort = int(input("Input the port of the server: "))
+try:
+    serverPort = int(input("Input the port of the server: "))
+except ValueError:
+    print('hey buddy thats not a port')
+    quit()
 
 # Connect to server (replace with the server machine’s IP if needed)
-client.connect((serverAddr, serverPort))
+try:
+    client.connect((serverAddr, serverPort))
+except:
+    print('Error: cannot connect')
+    quit()
 print("Connected to server")
 
 # Send messages and receive responses
