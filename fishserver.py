@@ -3,6 +3,9 @@ import threading
 
 serverPort = int(input("Enter port: "))
 
+clients = set()
+clients_lock = threading.Lock()
+
 def server():
     socketed_server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     #Bind to any address on the port the user specifies
@@ -19,16 +22,22 @@ def server():
 
 def client_handler(conn, addr):
     print(f"Fish {addr[0]} has connected on port {addr[1]}.")
+    with clients_lock:
+        clients.add(conn)
     while True:
         try:
             msg = conn.recv(1024)
             if not msg:
                 break
             print(f"Fish {addr[0]} has sent {msg.decode()}")
-            conn.sendall(f"{addr[0]}: {msg.decode()}".encode())
+            with clients_lock:
+                for c in clients:
+                    c.sendall(f"{addr[0]}: {msg.decode()}".encode())
         #If a client disconnects, we want the client's thread to end automatically
         except ConnectionResetError:
             print(f"Fish {addr[0]} has disconnected")
+            with clients_lock:
+                clients.remove(conn)
             break
     conn.close()
     print(f"Connection to {addr[0]} closed.")
