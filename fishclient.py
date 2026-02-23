@@ -18,6 +18,6 @@ while True:
         break
     client.send(msg.encode())
     response = client.recv(1024).decode()
-    print(f"Server says: {response}")
+    print(f"{response}")
 
 client.close()
