@@ -23,6 +23,8 @@ def server():
 def client_handler(conn, addr):
     print(f"Fish {addr[0]} has connected on port {addr[1]}.")
     with clients_lock:
+
+        #add the connecting client to the list of currently connected clients
         clients.add(conn)
     while True:
         try:
@@ -37,6 +39,7 @@ def client_handler(conn, addr):
         except ConnectionResetError:
             print(f"Fish {addr[0]} has disconnected")
             with clients_lock:
+                #remove the now disconnected client from the list of currently connected clients
                 clients.remove(conn)
             break
     conn.close()
