@@ -1,5 +1,5 @@
-## Fish Room
-Room full of fish
+## Fish Chat Room
+A simple chat room, but fish themed 
 
 ## Chatroom of fish
 Lots of Fish
