@@ -25,9 +25,31 @@ namespace FishChatSharp
         private int serverPort;
         private void button1_Click(object sender, EventArgs e)
         {
-            this.Hide();
-            int.TryParse(textBox2.Text, out serverPort);
-            SocketManager.ConnectToServer(textBox1.Text, serverPort);
+
+            if (textBox1.Text == "" || textBox1.Text == null) 
+            {
+                MessageBox.Show("An address is required.", "Connection Failure", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else if (textBox2.Text == "" || textBox2.Text == null)
+            {
+                MessageBox.Show("A port is required.", "Connection Failure", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else if (textBox3.Text == "" || textBox3.Text == null)
+            {
+                MessageBox.Show("A username is required.", "Connection Failure", MessageBoxButtons.OK, MessageBoxIcon.Information, MessageBoxDefaultButton.Button1);
+            }
+            else 
+            { 
+                this.Hide();
+                int.TryParse(textBox2.Text, out serverPort);
+                SocketManager.ConnectToServer(textBox1.Text, serverPort, textBox3.Text);
+            }
+            
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

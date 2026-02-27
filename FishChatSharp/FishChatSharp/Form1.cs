@@ -20,6 +20,7 @@ namespace FishChatSharp
         public string messageContents;
         private void button1_Click(object sender, EventArgs e)
         {
+            //grab the contents of textBox1, send a message using that, then clear the box.
             messageContents = textBox1.Text;
             SocketManager.SendData(messageContents);
             textBox1.Clear();
@@ -43,66 +44,61 @@ namespace FishChatSharp
 
         private void SetTimer() 
         {
+            //This timer makes the SocketManager check for new messages and updates the message log (listBox1) every second.
             System.Timers.Timer chatLogTimer = new System.Timers.Timer(1000);
             chatLogTimer.Elapsed += chatLogTimer_Elapsed;
             chatLogTimer.AutoReset = true;
             chatLogTimer.Enabled = true;
         }
 
-        public bool initalMessage;
 
         private void chatLogTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (SocketManager.clientSocket.Connected) 
-            { 
-                string prev = listBox1.Items[listBox1.Items.Count - 1].ToString();
-                try
+            if (SocketManager.clientSocket.Connected)
+            {
+                toolStripStatusLabel1.Text = "Connected";
+                textBox1.Invoke((MethodInvoker)delegate
                 {
-                    string recv = SocketManager.ReceiveData().Result;
-                    if (prev == recv)
-                    {
-                        return;
-                    }
-                    else
-                    {
-                        listBox1.BeginInvoke((MethodInvoker)delegate
-                        {
-                            if (recv != null)
-                            {
-                                if (initalMessage)
-                                {
-                                    listBox1.Items.Remove("");
-                                    listBox1.Items.Add(recv);
-                                    initalMessage = false;
-                                }
-                                else 
-                                {
-                                    listBox1.Items.Add(recv);
-                                }
-                                listBox1.TopIndex = listBox1.Items.Count - 1;
-                            }
-                        });
-                    }
-                }
-                catch (AggregateException)
+                    textBox1.Enabled = true;
+                });
+                button1.Invoke((MethodInvoker)delegate
                 {
-                    bool boxOpened = false;
-                    if (boxOpened = false)
+                    button1.Enabled = true;
+                });
+                string recv = SocketManager.ReceiveData();
+                listBox1.BeginInvoke((MethodInvoker)delegate
+                {
+                    if (recv != null)
                     {
-                        MessageBox.Show("The connection to the server was forcibly terminated.", "Connection Closed", MessageBoxButtons.OK, MessageBoxIcon.Exclamation, MessageBoxDefaultButton.Button1);
-                        boxOpened = true;
+                        //add message to message log (listBox1)
+                        listBox1.Items.Add(recv);
+                        //keep box scrolled to the bottom
+                        listBox1.TopIndex = listBox1.Items.Count - 1;
                     }
-                    Application.Exit();
-                }
+                });
+            }
+            else 
+            {
+                statusStrip1.Invoke((MethodInvoker)delegate
+                {
+                    toolStripStatusLabel1.Text = "Not Connected";
+                    
+                    
+                });
+                textBox1.Invoke((MethodInvoker)delegate 
+                { 
+                    textBox1.Enabled = false;
+                });
+                button1.Invoke((MethodInvoker)delegate 
+                { 
+                    button1.Enabled = false;
+                });
                 
-                
-            }  
+            }
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            listBox1.Items.Add("");
-            initalMessage = true;
             SetTimer();
         }
 

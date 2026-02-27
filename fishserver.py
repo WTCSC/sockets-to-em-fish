@@ -4,6 +4,7 @@ import threading
 serverPort = int(input("Enter port: "))
 
 clients = set()
+usernames = {}
 clients_lock = threading.Lock()
 
 def server():
@@ -23,7 +24,6 @@ def server():
 def client_handler(conn, addr):
     print(f"Fish {addr[0]} has connected on port {addr[1]}.")
     with clients_lock:
-
         #add the connecting client to the list of currently connected clients
         clients.add(conn)
     while True:
@@ -31,10 +31,14 @@ def client_handler(conn, addr):
             msg = conn.recv(1024)
             if not msg:
                 break
-            print(f"Fish {addr[0]} has sent {msg.decode()}")
-            with clients_lock:
-                for c in clients:
-                    c.sendall(f"{addr[0]}: {msg.decode()}".encode())
+            if msg.decode().startswith("..$CLNTMSG USERNAME:"):
+                user_name = msg.decode().replace("..$CLNTMSG USERNAME: ", "")
+                usernames[f"{addr[0]}:{addr[1]}"] = user_name
+            else:
+                print(f"Fish {usernames[f"{addr[0]}:{addr[1]}"]} has sent {msg.decode()}")
+                with clients_lock:
+                    for c in clients:
+                        c.sendall(f"{usernames[f"{addr[0]}:{addr[1]}"]}: {msg.decode()}".encode())
         #If a client disconnects, we want the client's thread to end automatically
         except ConnectionResetError:
             print(f"Fish {addr[0]} has disconnected")
