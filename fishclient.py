@@ -35,12 +35,12 @@ def fishclient():
 def reciever():
     while True:
         response = client.recv(1024).decode()
-        print(f"\e[k{response}")
+        print(f"{response}")
 
 
 def sender():
     while True:
-        msg = input("Enter message: ")
+        msg = input("\n")
         if not msg:
             break
         client.send(msg.encode())

@@ -38,7 +38,8 @@ def client_handler(conn, addr):
                 print(f"Fish {usernames[f"{addr[0]}:{addr[1]}"]} has sent {msg.decode()}")
                 with clients_lock:
                     for c in clients:
-                        c.sendall(f"{usernames[f"{addr[0]}:{addr[1]}"]}: {msg.decode()}".encode())
+                        if c != conn:
+                            c.sendall(f"{usernames[f"{addr[0]}:{addr[1]}"]}: {msg.decode()}".encode())
         #If a client disconnects, we want the client's thread to end automatically
         except ConnectionResetError:
             print(f"Fish {addr[0]} has disconnected")
