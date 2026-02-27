@@ -40,6 +40,7 @@ namespace FishChatSharp
             }
             else 
             { 
+                //close the config box and attempt to connect to the server
                 this.Hide();
                 int.TryParse(textBox2.Text, out serverPort);
                 SocketManager.ConnectToServer(textBox1.Text, serverPort, textBox3.Text);

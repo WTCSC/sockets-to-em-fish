@@ -22,7 +22,14 @@ namespace FishChatSharp
         {
             //grab the contents of textBox1, send a message using that, then clear the box.
             messageContents = textBox1.Text;
-            SocketManager.SendData(messageContents);
+            string sentMessage = SocketManager.SendData(messageContents);
+            listBox1.Invoke((MethodInvoker)delegate 
+            {
+                //add the just-sent message to the message log so that you can see what you said
+                listBox1.Items.Add(sentMessage);
+                //scroll to the sent message
+                listBox1.TopIndex = listBox1.Items.Count - 1;
+            });
             textBox1.Clear();
         }
 
@@ -57,6 +64,7 @@ namespace FishChatSharp
             if (SocketManager.clientSocket.Connected)
             {
                 toolStripStatusLabel1.Text = "Connected";
+                //you can't access UI elements from threads other than the UI thread, so we need to delegate to the UI thread for this
                 textBox1.Invoke((MethodInvoker)delegate
                 {
                     textBox1.Enabled = true;
