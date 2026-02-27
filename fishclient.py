@@ -1,6 +1,6 @@
 import socket
 import random
-import asyncio
+import threading
 
 # Create a socket object
 client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
@@ -26,19 +26,19 @@ def fishclient():
     print("Connected to server")
     client.send(f"..$CLNTMSG USERNAME: {userName}".encode())
 
-    asyncio.run(sender())
-
-    msghandler()
-
-
+    output_thread = threading.Thread(target=reciever)
+    input_thread = threading.Thread(target=sender)
+    output_thread.start()
+    input_thread.start()
+    
 # Send messages and receive responses
-def msghandler():
+def reciever():
     while True:
         response = client.recv(1024).decode()
-        print(f"{response}")
+        print(f"\u001B[s\u001B[A\u001B[999D\u001B[S\u001B[L{response}\u001B[u", end="", flush=True)
 
 
-async def sender():
+def sender():
     while True:
         msg = input("Enter message: ")
         if not msg:
