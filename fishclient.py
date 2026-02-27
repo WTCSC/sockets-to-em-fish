@@ -35,7 +35,7 @@ def fishclient():
 def reciever():
     while True:
         response = client.recv(1024).decode()
-        print(f"\u001B[s\u001B[A\u001B[999D\u001B[S\u001B[L{response}\u001B[u", end="", flush=True)
+        print(f"\e[k{response}")
 
 
 def sender():
