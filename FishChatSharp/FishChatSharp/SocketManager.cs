@@ -11,19 +11,23 @@ namespace FishChatSharp
     class SocketManager
     {
         public static Socket clientSocket = new Socket(System.Net.Sockets.SocketType.Stream, System.Net.Sockets.ProtocolType.IP);
-        
+        public static bool errorShown;
+
         public static void ConnectToServer(string serverIp, int serverPort, string userName) {
             try
             {
-                
                 clientSocket.Connect(serverIp, serverPort);
+                //send the username over to the server
                 SendData("..$CLNTMSG USERNAME: " + userName); 
             }
             catch (SocketException) 
             {
                 MessageBox.Show("The specified port or address is invalid.", "Invalid Address", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
             }
+            errorShown = false;
         }
+
+        
 
         public static string ReceiveData() 
         {
@@ -40,8 +44,12 @@ namespace FishChatSharp
             }
             catch (SocketException) 
             {
-                MessageBox.Show("The connection was forcibly closed by the server.", "Connection Closed", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
-                Application.Exit();
+                if (!errorShown) 
+                {
+                    errorShown = true;
+                    MessageBox.Show("The connection was forcibly closed by the server.", "Connection Closed", MessageBoxButtons.OK, MessageBoxIcon.Error, MessageBoxDefaultButton.Button1);
+                    Application.Exit();
+                }
                 return null;
             }
             
