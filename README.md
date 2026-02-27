@@ -15,3 +15,8 @@ A client fish joins the server and sends a message, then eventually the other cl
 * Then you enter the ip, port, and username
 * Then it will connect and you can start chatting
 
+#### Video Demonstration
+https://github.com/user-attachments/assets/d8a90e0a-3164-4414-9c08-5e89b79a7f30
+
+
+
